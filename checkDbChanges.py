@@ -37,6 +37,3 @@ for table in tables:
     if lastUpdate and lastUpdate.lup:
         print(table.tablename)
         print(lastUpdate.lup)
-    
-    
-
