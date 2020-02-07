@@ -13,10 +13,10 @@ def getTableNames(cursor):
     cursor.execute(sqlGetTables) 
     return cursor.fetchall()
 
-def lastTableUpdateDateTime(cursor,tablename):
+def lastTableUpdateDateTime(cursor,tablename,db):
     sql="SELECT OBJECT_NAME(OBJECT_ID) AS tablebaseName, last_user_update as lup,* "
     sql+=" FROM sys.dm_db_index_usage_stats "
-    sql+=" WHERE database_id = DB_ID('softone') "
+    sql+=" WHERE database_id = DB_ID('"+db+"') "
     sql+=" AND OBJECT_ID=OBJECT_ID('"+tablename+"') "
     
     
@@ -33,7 +33,7 @@ cursor = connect2Db(SERVER,DB,USERNAME,PASSWORD)
 
 tables = getTableNames(cursor)
 for table in tables:
-    lastUpdate = lastTableUpdateDateTime(cursor,table.tablename)
+    lastUpdate = lastTableUpdateDateTime(cursor,table.tablename,DB)
     if lastUpdate and lastUpdate.lup:
         print(table.tablename)
         print(lastUpdate.lup)
